@@ -1,0 +1,43 @@
+<odoo>
+
+    <data>
+    
+        <record id="funeraria_cruz.ataud_update_price_wizard" model="ir.ui.view">
+    <field name="name">funeraria_cruz ataud update price wizard</field>
+    <field name="model">ataud.update.price.wizard</field>
+    <field name="arch" type="xml">
+        <form string="">
+            <sheet>
+                <group string = "Actualizar precio">
+                    <field name="update_precio" />
+                </group>
+                <footer>
+                    <button string="Update price" type ="object" name = "update_price" />
+                    
+                    <button string = "Cancel" special = "cancel" class ="btn btn-secondary" />
+                
+                </footer>
+            </sheet>
+        </form>
+    </field>
+</record>
+<record model="ir.actions.act_window" id="funeraria_cruz.ataud_update_price_wizard_action_window">
+      <field name="name">funeraria_cruz ataud update price wizard</field>
+      <field name="res_model">ataud.update.price.wizard</field>
+      <field name="view_mode">form</field>
+      <field name="target">new</field>
+    </record>
+<record model="ir.actions.act_window" id="funeraria_cruz.ataud_update_price_wizard_action_options_window">
+      <field name="name">Update price</field>
+      <field name="res_model">ataud.update.price.wizard</field>
+      <field name="view_mode">form</field>
+      <field name="view_id" ref="funeraria_cruz.ataud_update_price_wizard" />
+      <field name="target">new</field>
+      <field name="binding_model_id" ref="model_funeraria_ataud" />
+      <field name="binding_view_types" >form</field>
+    </record>
+    
+    </data>
+    
+
+</odoo>

@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_funeraria_ataud,funeraria.ataud,model_funeraria_ataud,base.group_user,1,1,1,1
+access_funeraria_proveedor,funeraria.proveedor,model_funeraria_proveedor,base.group_user,1,1,1,1
+access_ataud_compra,ataud.compra,model_ataud_compra,base.group_user,1,1,1,1
+access_ataud_update_price_wizard,ataud.update.price.wizard,model_ataud_update_price_wizard,base.group_user,1,1,1,1

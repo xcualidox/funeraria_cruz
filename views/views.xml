@@ -1,0 +1,236 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+    <record model="ir.ui.view" id="funeraria_cruz.ataud_list">
+      <field name="name">funeraria_cruz ataud list</field>
+      <field name="model">funeraria.ataud</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="codigo"/>
+          <field name="tipo"/>
+          <field name="currency_id" invisible = "1" />
+          <field name="precio" widget="monetary" />
+          <field name="cantidad"  />
+          <field name="descripcion"  />
+        </tree>
+      </field>
+    </record>
+    <record model="ir.ui.view" id="funeraria_cruz.proveedor_list">
+      <field name="name">funeraria_cruz proveedor list</field>
+      <field name="model">funeraria.proveedor</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="photo" widget="image" options="{'size': (50, 50)}"  />
+          <field name="cedula"/>
+          <field name="name"/>
+          <field name="last_name"/>
+          <field name="telefono"  />
+          <field name="direccion"  />
+          <button class="oe_highlight" string="Print hello" type="object" name="print_hello" />
+          <button class="oe_highlight" string="Print user card" type="object" name="print_proveedor_report" />
+          <!-- Agregar encabezado para la columna del botón -->
+         
+        </tree>
+      </field>
+    </record>
+
+  <record id="funeraria_cruz.ataud_form" model="ir.ui.view">
+    <field name="name">funeraria_cruz ataud form</field>
+    <field name="model">funeraria.ataud</field>
+    <field name="arch" type="xml">
+      <form string="Ataud">
+        <sheet>
+          <button string = "Actualizar precio" type="object" name = "open_wizard" />
+
+          <group>
+            <field name="exists_db" invisible="1" />
+            <field name="currency_id" invisible = "1" />
+            <group string="Descripción">
+            <!-- Hacer el campo de codigo invisible si este no esta asignado -->
+                <field name="codigo" attrs = "{'invisible': [('exists_db','=',False)]}" />
+                <field name="tipo"/>
+                <field name="descripcion"/>              
+            </group>
+            <group string="Contabilidad">
+                <field name="cantidad"/>
+                <field name="precio" widget="monetary" />
+
+            </group>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <!-- Formulario compra de ataudes -->
+  <record id="funeraria_cruz.ataud_compra_form" model="ir.ui.view">
+    <field name="name">funeraria_cruz ataud compra form</field>
+    <field name="model">ataud.compra</field>
+    <field name="arch" type="xml">
+      <form string="Compra de ataudes">
+
+        <sheet>
+          <group>
+                <field name="exists_db" invisible="1" />
+                <field name="currency_id" options="{'no_create': True}" invisible = "1" />
+
+            <group string="Ataud">
+                <field name="ataud_id"/>
+                <field name="proveedor_id"/> 
+                <field name = "proveedor_tel" />
+            </group>
+            <group string="Contabilidad">
+                <field name="cantidad"/>
+                <field name="precio" widget="monetary" />
+            </group>
+          </group>
+          <group  string="Transacción">
+                <field name="purchase_code" attrs="{'invisible': [('exists_db','=',False)],'readonly':[('exists_db','=',True)] }" />
+                <field name="descuento"/>
+                <field name="total" widget="monetary" />
+                <field name="purchase_date" attrs="{'invisible': [('exists_db','=',False)] , 'readonly' : [('exists_db','=',True)]}" />
+                <field name="notes"/>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <!-- Lista de compra de ataudes -->
+  <record id="funeraria_cruz.ataud_compra_list" model="ir.ui.view">
+    <field name="name">funeraria_cruz ataud compra list</field>
+    <field name="model">ataud.compra</field>
+    <field name="arch" type="xml">
+      <tree string="Compra de ataudes">
+        <field name="purchase_code" />
+        <field name="ataud_id" />
+        <field name="precio" widget="monetary" />
+        <field name="cantidad" sum = "Total de ataudes" />
+        <field name="proveedor_id" />
+        <field name="descuento" />
+        <field name="currency_id" invisible = "1" />
+        <field name="total" widget = "monetary" />
+        <field name="purchase_date" />
+      </tree>
+    </field>
+  </record>
+  <!--  -->
+  <record id="funeraria_cruz.proveedor_form" model="ir.ui.view">
+    <field name="name">funeraria_cruz proveedor form</field>
+    <field name="model">funeraria.proveedor</field>
+    <field name="arch" type="xml">
+      <form string="Proveedor" >
+        <sheet>
+          <button string="Prueba del context" name="prueba_context" type="object" class="oe_highlight"/>
+
+          <group>
+            <group string="Datos Personales">
+                <field name="photo" widget="image" options = "{'size': (100,100)}" />
+                <field name="cedula"/>
+                <field name="name"/>
+                <field name="last_name"/>
+              
+            </group>
+            <group string="Contacto">
+                <field name="telefono"/>
+                <field name="direccion" context = "{'default_direccion' : 'Enrique segoviano' }" />
+
+            </group>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <!-- proveedor kanbam view -->
+ <record id="funeraria_cruz.proveedor_kanban" model="ir.ui.view">
+    <field name="name">funeraria_cruz proveedor kanban</field>
+    <field name="model">funeraria.proveedor</field>
+    <field name="arch" type="xml">
+
+        <kanban>        
+        <field name="id" />   
+         <field name="name"/>
+        <field name="last_name"/>
+            <templates class="xd">
+                <t t-name="kanban-box">
+                    <div t-att-class="oe_kanban_global_click">
+                        <div class="oe_kanban_image">
+                            <img alt="user" t-att-src="kanban_image('funeraria.proveedor', 'photo', record.id.raw_value)" style="width:50px;height:50px" />
+                        </div>
+                        <div class="oe_kanban_details">
+                            <strong class="o_kanban_record_title font-weight-bold mt-5">
+                            <t t-esc="record.name.value"/> <t t-esc="record.last_name.value"/>
+                            </strong>
+
+                        </div>
+                    </div>
+                </t>
+             </templates>
+        </kanban>
+    </field>
+</record>
+<record id="funeraria_cruz.ataud_search" model="ir.ui.view">
+  <field name="name">funeraria_cruz ataud search</field>
+  <field name="model">funeraria.ataud</field>
+  <field name="arch" type="xml">
+    <search string="Ataud">
+      <group name="Group by" string="Tipo">
+        <filter name="tipo" string="Tipo de ataud"  context="{'group_by': 'tipo'}" />
+      </group>
+      
+    </search>
+  </field>
+</record>
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="funeraria_cruz.ataud_action_window">
+      <field name="name">Ataudes</field>
+      <field name="res_model">funeraria.ataud</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    <record model="ir.actions.act_window" id="funeraria_cruz.proveedor_action_window">
+      <field name="name">Proveedores</field>
+      <field name="res_model">funeraria.proveedor</field>
+      <field name="view_mode">tree,form,kanban</field>
+    </record>
+    <record model="ir.actions.act_window" id="funeraria_cruz.ataud_compra_action_window">
+      <field name="name">Compra de ataudes</field>
+      <field name="res_model">ataud.compra</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="funeraria_cruz.action_server">
+      <field name="name">funeraria_cruz server</field>
+      <field name="model_id" ref="model_funeraria_cruz_funeraria_cruz"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+
+    <menuitem name="Funeraria Cruz" id="funeraria_cruz.menu_root"/>
+
+    <!-- menu categories -->
+
+    <menuitem name="Ataud" id="funeraria_cruz.menu_1" parent="funeraria_cruz.menu_root" action="funeraria_cruz.ataud_action_window" />
+    <menuitem name="Proveedor" id="funeraria_cruz.menu_2" parent="funeraria_cruz.menu_root" action="funeraria_cruz.proveedor_action_window" />
+    <menuitem name="Compra de ataudes" id="funeraria_cruz.menu_3" parent="funeraria_cruz.menu_root" action="funeraria_cruz.ataud_compra_action_window" />
+
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="funeraria_cruz.menu_1_list" parent="funeraria_cruz.menu_1"
+              action="funeraria_cruz.action_window"/>
+    <menuitem name="Server to list" id="funeraria_cruz" parent="funeraria_cruz.menu_2"
+              action="funeraria_cruz.action_server"/>
+-->
+  </data>
+</odoo>

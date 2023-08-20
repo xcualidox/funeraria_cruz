@@ -1,0 +1,21 @@
+
+<odoo>
+
+    <data>
+    
+        <record id="funeraria_cruz.proveedor_report" model="ir.actions.report">
+            <field name="name">Reporte</field>
+            <field name="model">funeraria.proveedor</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">funeraria_cruz.funeraria_cruz_proveedors_info</field>
+            <field name="report_file">funeraria_cruz.funeraria_cruz_proveedors_info</field>
+            <field name="print_report_name">"proveedors_info"</field>
+            <field name="binding_model_id" eval="ref('funeraria_cruz.model_funeraria_proveedor')" />
+            <field name="binding_type">report</field>
+            <field name="binding_view_types" >form</field>
+        </record>
+    
+    </data>
+    
+
+</odoo>

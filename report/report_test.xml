@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+
+        <template id="header_footer_custom_proveedor" name="template_name">
+            <div class="header"  >
+                <div class="row align-items-center" style="widht:100%;position:relative;border-bottom:2px solid black;padding-bottom:1rem">
+                    <div class="col-2">
+                    <img class="img-fluid" src="https://static.vecteezy.com/system/resources/previews/001/194/123/original/cross-glow-png.png" alt="Company logo"  /> 
+                    </div>
+                    <h1 class="col-10 text-right" style="position:absolute;right:0;top:50%;transform: translateY(-50%);font-size:33pt;">
+                        Funeraria Cruz
+                    </h1>
+                   
+                    <span style="position:absolute;right:0;top:0; color:#505050;" t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y')" />
+                </div>
+            </div>
+            <div class="article o_report_layout_standar" >
+                <t t-raw="0"/>
+            </div>
+            <div class="footer"  >
+                <p class="text-center ">
+                funeraria_cruz@gmail.com Tel: 0255-6216531
+                </p>
+                <p class="text-center ">
+                Pagina <span class="page" /> / <span class="topage"/>
+                </p>
+            </div>
+        </template> 
+        <template id="proveedor_report_test" >
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="proveedor">
+                    <t t-call="funeraria_cruz.header_footer_custom_proveedor">
+                        <div class="page pt-5">
+                        <h2 class="text-center" style="font-size:30pt;">
+                            Proveedor Info
+                        </h2>
+                        <img class="my-4" t-att-src="image_data_uri(proveedor.photo) if proveedor.photo else 'funeraria_cruz/static/img/no_image.png'"  style="border-radius:50%;box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px, rgb(51, 51, 51) 0px 0px 0px 3px;display:block;margin:auto;object-fit: contain;" width="220" height="220" />
+                        </div>
+                        <p t-esc="('%s %s'%(proveedor.name,proveedor.last_name)).title()" style="font-size:25pt;font-weight:bold" class="text-center" />
+                        <p t-esc="'V-{:,}'.format(proveedor.cedula).replace(',','.')" style="font-size:19pt;font-weight:bold;color:#444444" class="text-center" />
+                        <div class="row mt-5" style="border-top:2px solid #004AAD;border-bottom:2px solid #004AAD;padding-bottom:3rem;padding-top:3rem">
+                            <div class="col-7 text-left">
+                                <h3 style="font-size:22pt;font-weight:bold;">Contacto</h3>
+                                <p style="font-weight:bold;font-size:17pt;color:#444444;">Télefono:</p>
+                                <p style="font-weight:bold;font-size:17pt;color:#444444;" t-esc="proveedor.telefono[:4]+'-'+proveedor.telefono[4:]"/>
+                                <p style="font-weight:bold;font-size:17pt;color:#444444;">Email:</p>
+                                <p style="font-weight:bold;font-size:17pt;color:#444444;">prueba@prueba.com</p>
+                            </div>
+                            <div class="col-5 text-right">
+                                <h3 style="font-size:22pt;font-weight:bold;" >Dirección</h3>
+                                <p style="font-weight:bold;font-size:17pt;color:#444444;" t-esc="proveedor.direccion" class="text-break"/>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+                
+            </t>
+        </template>    
+        <template id="funeraria_cruz.custom_report_css"  inherit_id="web.report_assets_common">
+            <xpath expr="." position="inside">
+                <link href="/funeraria_cruz/static/src/css/styles.css" rel="stylesheet" type="text/css"/>
+            </xpath>
+        </template>
+
+        <record id="proveedor_report_test_action" model="ir.actions.report">
+                <field name="name">Proveedor report test</field>
+                <field name="model">funeraria.proveedor</field>
+                <field name="report_type">qweb-pdf</field>
+                <field name="report_name">funeraria_cruz.proveedor_report_test</field>
+                <field name="report_file">funeraria_cruz.proveedor_report_test</field>
+                <field name="print_report_name">"Esto es solo una prueba"</field>
+                <field name="binding_model_id" eval="ref('funeraria_cruz.model_funeraria_proveedor')" />
+                <field name="binding_type">report</field>
+                <!-- <field name="binding_view_types" ></field> -->
+        </record>
+
+    </data>
+    
+
+</odoo>
